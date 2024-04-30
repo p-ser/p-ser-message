@@ -1,7 +1,7 @@
 ### 로컬용 도커 네트워크 생성
 
 ```shell
- docker network create kafka-network
+ docker network create p-ser-network
 ```
 
 ### zookeeper 컨테이너 실행
