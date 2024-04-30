@@ -19,7 +19,7 @@
 ### redis 컨테이너 실행
 
 ```shell
- docker run -p 6379:6379 --network p-ser-network --name redis redis
+ docker run -p 6379:6379 --network p-ser-network --name redis redis --requirepass 1234
 ```
 
 ### k8s
