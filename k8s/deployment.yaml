@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper-deployment
+spec:
+  selector:
+    matchLabels:
+      app: p-ser-zookeeper
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: p-ser-zookeeper
+    spec:
+      containers:
+        - name: zookeeper-container
+          image: digitalwonderland/zookeeper
+          ports:
+            - containerPort: 2181
+          env:
+            - name: ZOOKEEPER_ID
+              value: "1"
+            - name: ZOOKEEPER_SERVER_1
+              value: zookeeper-container
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-broker
+spec:
+  selector:
+    matchLabels:
+      app: p-ser-kafka
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: p-ser-kafka
+    spec:
+      containers:
+        - name: kafka-container
+          image: wurstmeister/kafka
+          ports:
+            - containerPort: 9092
+          env:
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: PLAINTEXT://kafka-service.kafka-ns.svc.cluster.local:9092
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: zookeeper-service.kafka-ns.svc.cluster.local:2181
+            - name: KAFKA_CREATE_TOPICS
+              value: go-kafka
+            - name: KAFKA_ADVERTISED_HOST_NAME
+              value: kafka-service.kafka-ns.svc.cluster.local
+            - name: KAFKA_BROKER_ID
+              value: "0"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  selector:
+    matchLabels:
+      app: p-ser-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: p-ser-redis
+    spec:
+      containers:
+        - name: redis-container
+          image: redis
+          ports:
+            - containerPort: 6379
