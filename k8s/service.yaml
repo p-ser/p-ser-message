@@ -26,6 +26,8 @@ spec:
   ports:
     - name: kafka-port
       port: 9092
+    - name: kafka-port-internal
+      port: 29092
   type: ClusterIP
   clusterIP: None
   selector:
