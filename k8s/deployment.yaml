@@ -75,6 +75,9 @@ spec:
     spec:
       containers:
         - name: redis-container
-          image: redis
+          image: bitnami/redis:7.0.15-debian-12-r17
           ports:
             - containerPort: 6379
+          env:
+            - name: REDIS_PASSWORD
+              value: "1234"
